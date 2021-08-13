@@ -19,7 +19,7 @@ import sys
 import os
 import argparse
 from tools.confparser import ConfParser
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 
 
 def banner():
@@ -95,7 +95,19 @@ def args_parse():
                             sys.exit(1)
                         file_to_analyse = args.file
                         if args.rule:
-                            if not os.path.isfile(args.rule):
+                            if os.path.isdir(args.rule):
+                                print("Using all rules of directory: {}".format(args.rule))
+                                yarlist = []
+                                for yarfile in os.listdir(args.rule):
+                                    if yarfile.endswith('yar'):
+                                        yarlist.append(yarfile)
+                                if not yarlist:
+                                    print("The directory {} does not contain any yara rule, exiting.".format(args.rule))
+                                    sys.exit(1)
+                                else:
+                                    rule_to_use = yarlist
+
+                            elif not os.path.isfile(args.rule):
                                 print("The specified rule {} does not exist, exiting.".format(args.rule))
                                 sys.exit(1)
                             rule_to_use = args.rule
@@ -106,7 +118,19 @@ def args_parse():
                 else:
                     archivesDir_to_analyse = args.directory
                     if args.rule:
-                        if not os.path.isfile(args.rule):
+                        if os.path.isdir(args.rule):
+                            print("Using all rules of directory: {}".format(args.rule))
+                            yarlist = []
+                            for yarfile in os.listdir(args.rule):
+                                if yarfile.endswith('yar'):
+                                    yarlist.append(yarfile)
+                            if not yarlist:
+                                print("The directory {} does not contain any yara rule, exiting.".format(args.rule))
+                                sys.exit(1)
+                            else:
+                                rule_to_use = yarlist
+
+                        elif not os.path.isfile(args.rule):
                             print("The specified rule {} does not exist, exiting.".format(args.rule))
                             sys.exit(1)
                         rule_to_use = args.rule
@@ -117,7 +141,19 @@ def args_parse():
                     sys.exit(1)
                 file_to_analyse = args.file
                 if args.rule:
-                    if not os.path.isfile(args.rule):
+                    if os.path.isdir(args.rule):
+                        print("Using all rules of directory: {}".format(args.rule))
+                        yarlist = []
+                        for yarfile in os.listdir(args.rule):
+                            if yarfile.endswith('yar'):
+                                yarlist.append(yarfile)
+                        if not yarlist:
+                            print("The directory {} does not contain any yara rule, exiting.".format(args.rule))
+                            sys.exit(1)
+                        else:
+                            rule_to_use = yarlist
+
+                    elif not os.path.isfile(args.rule):
                         print("The specified rule {} does not exist, exiting.".format(args.rule))
                         sys.exit(1)
                     rule_to_use = args.rule
@@ -167,13 +203,21 @@ def main(ConfFile):
         print("The specified directory to analyse {} doesn't exist, skip".format(archivesDir_to_analyse))
         sys.exit(0)
 
+    elif rule_to_use and not yara_rules_dir:
+        yara_rules_dir = rule_to_use
+
     # list .yar files
     yarfiles = []
     if rule_to_use:
-        yarfiles.append(rule_to_use)
+        if os.path.isfile(rule_to_use):
+            yarfiles.append(rule_to_use)
+        if os.path.isdir(rule_to_use):
+            for yarfile in os.listdir(rule_to_use):
+                if yarfile.endswith('yar'):
+                    yarfiles.append(yarfile)
     else:
         if not yara_rules_dir and rule_to_use:
-                yara_rules_dir = os.path.dirname(rule_to_use)
+            yara_rules_dir = os.path.dirname(rule_to_use)
         for yarfile in os.listdir(yara_rules_dir):
             if yarfile.endswith('yar'):
                 yarfiles.append(yarfile)
@@ -187,6 +231,15 @@ def main(ConfFile):
 
     # compile and load YARA rules
     compiled_rules = []
+    if not os.path.exists(yara_compiled):
+        print("The specified compiled directory {} doesn't exist, trying to create it...".format(yara_compiled))
+        try:
+            os.makedirs(yara_compiled, mode=0o777, exist_ok=True)
+            print("{} created.\n".format(yara_compiled))
+        except Exception as e:
+            print("[!!!] Directory creation Error: " + str(e))
+            sys.exit(1)
+
     for f in yarfiles:
         try:
             if os.path.dirname(f):
