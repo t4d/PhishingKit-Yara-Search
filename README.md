@@ -32,7 +32,7 @@ $ ./PhishingKit-Yara-Search.py -h
  / ____/ /\ \_____/ / /_/ / /  / /_/ /_____/__/ /  __/ /_/ / /  / /__/ / / /
 /_/   /_/  \_\   /_/\__,_/_/   \__,_/     /____/\___/\__,_/_/   \___/_/ /_/ 
 
--= PhishingKit Yara Search - Classify phishing kits zip files with Yara rules - v0.2.0 =-
+-= PhishingKit Yara Search - Classify phishing kits zip files with Yara rules - v0.3.0 =-
 
 usage: PhishingKit-Yara-Search.py [-h] [-c CONFIGURATION] [-f FILE] [-r RULE]
                                   [-D DIRECTORY] [-v]
@@ -107,7 +107,7 @@ $ ./PhishingKit-Yara-Search.py -c conf/example.conf
  / ____/ /\ \_____/ / /_/ / /  / /_/ /_____/__/ /  __/ /_/ / /  / /__/ / / /
 /_/   /_/  \_\   /_/\__,_/_/   \__,_/     /____/\___/\__,_/_/   \___/_/ /_/
 
--= PhishingKit Yara Search - Classify phishing kits zip files with Yara rules - v0.2.0 =-    
+-= PhishingKit Yara Search - Classify phishing kits zip files with Yara rules - v0.3.0 =-    
 
         file: http__vtennis.vn_forumrunner_PPL-ID.zip
                 --> This rule(s) matched: [[PK_PayPal_H3ATSTR0K3]]
@@ -128,7 +128,7 @@ $ ./PhishingKit-Yara-Search.py -r rules/PK_PayPal_H3ATSTR0K3.yar -f ./http__vten
 / ____/ /\ \_____/ / /_/ / /  / /_/ /_____/__/ /  __/ /_/ / /  / /__/ / / /
 _/   /_/  \_\   /_/\__,_/_/   \__,_/     /____/\___/\__,_/_/   \___/_/ /_/
 
-= PhishingKit Yara Search - Classify phishing kits zip files with Yara rules - v0.2.0 =-                                                                  
+= PhishingKit Yara Search - Classify phishing kits zip files with Yara rules - v0.3.0 =-                                                                  
 
        file: ./http__vtennis.vn_forumrunner_PPL-ID.zip                                                                        
                --> This rule(s) matched: [[PK_PayPal_H3ATSTR0K3]]
@@ -145,7 +145,32 @@ $ ./PhishingKit-Yara-Search.py -r rules/PK_PayPal_H3ATSTR0K3.yar -D ./dl/
  / ____/ /\ \_____/ / /_/ / /  / /_/ /_____/__/ /  __/ /_/ / /  / /__/ / / /
 /_/   /_/  \_\   /_/\__,_/_/   \__,_/     /____/\___/\__,_/_/   \___/_/ /_/
 
--= PhishingKit Yara Search - Classify phishing kits zip files with Yara rules - v0.2.0 =-                                                                  
+-= PhishingKit Yara Search - Classify phishing kits zip files with Yara rules - v0.3.0 =-                                                                  
+
+        file: http__vtennis.vn_forumrunner_PPL-ID.zip
+                --> This rule(s) matched: [[PK_PayPal_H3ATSTR0K3]]
+        file: https__investing.co.id_wp-content_upgrade_wp-file-manager-n0k7CF_wp-file-manager_languages_Secure-Mail.zip
+                --> This rule(s) matched: [[PK_PayPal_H3ATSTR0K3]]
+        file: http__compte-login.com_PayPalfinal.zip
+                --> This rule(s) matched: [[PK_PayPal_H3ATSTR0K3]]
+        file: http__compte-login.com__PayPal.zip
+                --> This rule(s) matched: [[PK_PayPal_H3ATSTR0K3]]
+
+~~~
+
+## Usage with all rules on a directory containing several zip files
+~~~
+$ ./PhishingKit-Yara-Search.py -r rules/ -D ./dl/
+
+    ____  __ __  __  __                      _____                      __
+   / __ \/ // /  \ \/ /___ __________ _     / ___/___  ____ ___________/ /_
+  / /_/ / //_/____\  / __ `/ ___/ __ `/_____\__ \/ _ \/ __ `/ ___/ ___/ __ \
+ / ____/ /\ \_____/ / /_/ / /  / /_/ /_____/__/ /  __/ /_/ / /  / /__/ / / /
+/_/   /_/  \_\   /_/\__,_/_/   \__,_/     /____/\___/\__,_/_/   \___/_/ /_/
+
+-= PhishingKit Yara Search - Classify phishing kits zip files with Yara rules - v0.3.0 =-
+
+Using all rules of directory: rules/                                                                
 
         file: http__vtennis.vn_forumrunner_PPL-ID.zip
                 --> This rule(s) matched: [[PK_PayPal_H3ATSTR0K3]]
